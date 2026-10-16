@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quem propõe? Lula ou Flávio Bolsonaro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --stage-a:#1B3FA8; --stage-b:#0A1B5C; --stage-c:#050D33;
+  --panel:#0E2470; --panel-2:#13308C; --line:#3E63D6;
+  --gold:#F5C542; --gold-deep:#C9931B; --gold-text:#2A1A00;
+  --text:#F3F6FF; --muted:#B6C3EE; --dim:#7F90C8;
+  --ok:#3DDC84; --bad:#FF6B5B;
+  --focus:#FFFFFF;
+  color-scheme:dark;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --stage-a:#132E82; --stage-b:#071447; --stage-c:#020722;
+    --panel:#0A1B57; --panel-2:#0F2672; --line:#2F51BF;
+  }
+}
+:root[data-theme="dark"]{
+  --stage-a:#132E82; --stage-b:#071447; --stage-c:#020722;
+  --panel:#0A1B57; --panel-2:#0F2672; --line:#2F51BF;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;color:var(--text);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 0%, var(--stage-a) 0%, transparent 70%),
+    radial-gradient(ellipse 120% 80% at 50% 100%, var(--stage-b) 0%, var(--stage-c) 75%);
+  background-color:var(--stage-c);background-attachment:fixed}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;
+  background:
+    conic-gradient(from 200deg at 12% -10%, transparent 0 8deg, rgba(255,255,255,.10) 10deg 14deg, transparent 16deg 360deg),
+    conic-gradient(from 150deg at 88% -10%, transparent 0 4deg, rgba(255,255,255,.10) 6deg 10deg, transparent 12deg 360deg)}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:22px 18px 56px}
+.marca{display:flex;align-items:center;justify-content:center;gap:14px;margin:4px 0 22px}
+.logo{font-family:Anton,Impact,"Arial Narrow",sans-serif;font-size:clamp(2.2rem,6vw,3.6rem);line-height:1;letter-spacing:.01em;color:var(--gold);text-shadow:0 3px 0 var(--gold-deep),0 0 28px rgba(245,197,66,.35)}
+.selo{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#FFE58A,var(--gold) 45%,var(--gold-deep));color:var(--gold-text);font-family:Anton,Impact,sans-serif;font-size:1.5rem;box-shadow:0 0 0 3px #ffffff30,0 0 24px rgba(245,197,66,.45)}
+
+.palco{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:22px;align-items:start}
+.centro{display:flex;flex-direction:column;gap:18px}
+
+/* Faixa de pergunta: formato hexagonal típico de programa de auditório */
+.placa{position:relative;background:linear-gradient(180deg,var(--panel-2),var(--panel));padding:26px 44px 28px;
+  clip-path:polygon(28px 0,calc(100% - 28px) 0,100% 50%,calc(100% - 28px) 100%,28px 100%,0 50%);
+  filter:drop-shadow(0 0 0 transparent)}
+.moldura{padding:3px;background:linear-gradient(90deg,var(--gold-deep),var(--gold),var(--gold-deep));
+  clip-path:polygon(28px 0,calc(100% - 28px) 0,100% 50%,calc(100% - 28px) 100%,28px 100%,0 50%)}
+.placa-topo{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:.92rem;margin-bottom:10px}
+.placa-topo b{color:var(--gold);font-weight:700}
+.tag{display:inline-block;color:var(--gold);border:1px solid #F5C54280;border-radius:999px;padding:1px 12px;font-size:.84rem;margin:0 0 10px}
+.pergunta{font-size:clamp(1.12rem,2.3vw,1.4rem);line-height:1.5;margin:0}
+.pergunta strong{color:#FFE7A0}
+
+.opcoes{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.opcao{appearance:none;border:0;padding:3px;cursor:pointer;background:linear-gradient(90deg,var(--line),#6E8EF0,var(--line));font:inherit;color:inherit;
+  clip-path:polygon(22px 0,calc(100% - 22px) 0,100% 50%,calc(100% - 22px) 100%,22px 100%,0 50%);transition:transform .12s ease}
+.opcao span.miolo{display:flex;align-items:center;gap:14px;padding:16px 34px;background:linear-gradient(180deg,var(--panel-2),var(--panel));
+  clip-path:polygon(20px 0,calc(100% - 20px) 0,100% 50%,calc(100% - 20px) 100%,20px 100%,0 50%);font-size:1.25rem;font-weight:700;transition:background .15s}
+.opcao .letra{font-family:Anton,Impact,sans-serif;color:var(--gold);font-size:1.4rem;font-weight:400;min-width:1.2em}
+.opcao:hover .miolo{background:linear-gradient(180deg,#1B3CA3,#11297E)}
+.opcao:active{transform:scale(.98)}
+.opcao.sel{background:linear-gradient(90deg,var(--gold-deep),#FFE58A,var(--gold-deep))}
+.opcao.sel .miolo{background:linear-gradient(180deg,#FFD25E,var(--gold));color:var(--gold-text)}
+.opcao.sel .letra{color:var(--gold-text)}
+.opcao:focus-visible{outline:none}
+.opcao:focus-visible .miolo{box-shadow:inset 0 0 0 3px var(--focus)}
+
+.confirma{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;min-height:58px;padding:0 6px}
+.confirma p{margin:0;color:var(--muted)}
+.confirma p.pergunta-host{font-family:Anton,Impact,sans-serif;font-size:1.5rem;color:var(--text);letter-spacing:.01em}
+.botao{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:700;font-size:1.05rem;color:var(--gold-text);padding:14px 30px;border-radius:999px;
+  background:linear-gradient(180deg,#FFE58A,var(--gold) 55%,var(--gold-deep));box-shadow:0 4px 0 #7A5A0C,0 0 22px rgba(245,197,66,.35);transition:transform .08s,box-shadow .08s}
+.botao:hover{filter:brightness(1.06)}
+.botao:active{transform:translateY(3px);box-shadow:0 1px 0 #7A5A0C}
+.botao:disabled{opacity:.35;cursor:default;box-shadow:none}
+.botao.sec{background:transparent;color:var(--text);box-shadow:inset 0 0 0 2px var(--line)}
+.botao:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+
+/* Escada de perguntas */
+.escada{list-style:none;margin:0;padding:12px;border-radius:16px;background:linear-gradient(180deg,#0B1E63cc,#06123Fcc);box-shadow:inset 0 0 0 2px var(--line);display:flex;flex-direction:column-reverse;gap:3px}
+.escada li{display:flex;justify-content:space-between;align-items:center;padding:3px 12px;border-radius:999px;font-size:.92rem;color:var(--dim)}
+.escada li .n{font-family:Anton,Impact,sans-serif;font-size:1rem;color:var(--muted);letter-spacing:.02em}
+.escada li.feita{color:var(--muted)}
+.escada li.feita::after{content:"respondida";font-size:.75rem}
+.escada li.atual{background:linear-gradient(90deg,var(--gold-deep),var(--gold));color:var(--gold-text);font-weight:700}
+.escada li.atual .n{color:var(--gold-text)}
+.escada li.atual::after{content:"agora";font-size:.8rem}
+.escada li.marco .n{color:#FFFFFF}
+
+/* Abertura */
+.abertura{text-align:center;max-width:720px;margin:10px auto 0}
+.abertura h1{font-family:Anton,Impact,sans-serif;font-weight:400;font-size:clamp(1.8rem,4.6vw,2.6rem);line-height:1.15;margin:0 0 14px;letter-spacing:.01em}
+.abertura p{color:var(--muted);margin:0 auto 10px;max-width:58ch}
+.regras{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0 28px;text-align:left}
+.regras div{background:#0B1E6399;border-radius:14px;padding:14px 16px;box-shadow:inset 0 0 0 1px var(--line)}
+.regras b{display:block;font-family:Anton,Impact,sans-serif;font-weight:400;color:var(--gold);font-size:1.6rem;line-height:1.1}
+.regras span{color:var(--muted);font-size:.95rem}
+.nome{display:flex;flex-direction:column;align-items:center;gap:10px;margin:0 auto 22px;max-width:420px}
+.nome label{font-weight:700;font-size:1.05rem}
+.nome input{width:100%;font:inherit;font-size:1.15rem;text-align:center;color:var(--text);background:#06123Fcc;border:0;border-radius:999px;padding:14px 22px;box-shadow:inset 0 0 0 2px var(--line);outline:none}
+.nome input::placeholder{color:var(--dim)}
+.nome input:focus{box-shadow:inset 0 0 0 2px var(--gold),0 0 18px rgba(245,197,66,.3)}
+.nome .aviso{margin:0;min-height:1.4em;color:var(--bad);font-size:.92rem}
+.placar .quem{font-family:Anton,Impact,sans-serif;font-size:clamp(1.8rem,5vw,2.6rem);line-height:1.1;color:var(--text);margin:0 0 2px;overflow-wrap:anywhere}
+
+/* Resultado */
+.resultado{max-width:860px;margin:0 auto}
+.placar{text-align:center;margin:6px 0 26px}
+.placar .rot{color:var(--muted);margin:0}
+.placar .num{font-family:Anton,Impact,sans-serif;font-size:clamp(4.5rem,15vw,8rem);line-height:1;color:var(--gold);text-shadow:0 4px 0 var(--gold-deep),0 0 40px rgba(245,197,66,.4);margin:6px 0}
+.placar .frase{font-size:1.15rem;margin:0 0 14px}
+.parciais{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.parciais span{background:#0B1E6399;box-shadow:inset 0 0 0 1px var(--line);border-radius:999px;padding:6px 16px;color:var(--muted)}
+.parciais b{color:var(--text)}
+.filtro{display:flex;justify-content:center;gap:8px;margin:26px 0 16px;flex-wrap:wrap}
+.filtro button{appearance:none;border:0;font:inherit;cursor:pointer;color:var(--muted);background:transparent;border-radius:999px;padding:6px 16px;box-shadow:inset 0 0 0 1px var(--line)}
+.filtro button[aria-pressed="true"]{background:var(--gold);color:var(--gold-text);box-shadow:none;font-weight:700}
+.lista{display:flex;flex-direction:column;gap:14px}
+.card{background:linear-gradient(180deg,#0E2470ee,#0A1B57ee);border-radius:16px;padding:18px 20px;box-shadow:inset 4px 0 0 var(--ok),inset 0 0 0 1px var(--line)}
+.card.erro{box-shadow:inset 4px 0 0 var(--bad),inset 0 0 0 1px var(--line)}
+.card .cab{display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:6px}
+.card .cab .n{font-family:Anton,Impact,sans-serif;color:var(--gold);font-size:1.15rem}
+.card .st{font-weight:700}
+.card .st.ok{color:var(--ok)} .card .st.bad{color:var(--bad)}
+.card .q{margin:0 0 10px}
+.card .q strong{color:#FFE7A0}
+.card .resp{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0 0 8px;font-size:.96rem}
+.card .resp b{color:var(--gold)}
+.card .porque{margin:0;color:var(--muted);font-size:.95rem;border-top:1px dashed #3E63D680;padding-top:8px}
+.acoes{display:flex;justify-content:center;gap:12px;margin-top:26px;flex-wrap:wrap}
+footer{position:relative;z-index:1;max-width:72ch;margin:10px auto 0;padding:0 18px 30px;color:var(--dim);font-size:.85rem;text-align:center}
+
+.entra{animation:entra .35s ease both}
+@keyframes entra{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+@media (max-width:820px){
+  .palco{grid-template-columns:1fr}
+  .escada{flex-direction:row;overflow-x:auto;padding:8px;gap:4px;order:-1}
+  .escada li{padding:4px 9px;flex:0 0 auto}
+  .escada li::after{content:none!important}
+  .escada li.feita{background:#ffffff14}
+  .regras{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .wrap{padding:14px 12px 40px}
+  .opcoes{grid-template-columns:1fr;gap:10px}
+  .placa{padding:20px 30px 22px;clip-path:polygon(16px 0,calc(100% - 16px) 0,100% 50%,calc(100% - 16px) 100%,16px 100%,0 50%)}
+  .moldura{clip-path:polygon(16px 0,calc(100% - 16px) 0,100% 50%,calc(100% - 16px) 100%,16px 100%,0 50%)}
+  .confirma{justify-content:center;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="marca"><span class="selo" aria-hidden="true">?</span><span class="logo">Quem propõe?</span></div>
+  <main id="app" aria-live="polite"></main>
+</div>
+<footer>Perguntas elaboradas a partir do “Programa de Governo” da coligação de Lula (PT, PSB, PV, PCdoB, PDT, PSOL e Rede) e das “Diretrizes do Plano de Governo Flávio Bolsonaro 2027-2030”. São resumos: para o texto completo, consulte os documentos originais nas páginas indicadas.</footer>
+<script>
+const PERGUNTAS = [
+/* ===================== FLÁVIO BOLSONARO ===================== */
+["F","Quem propõe declarar PCC, CV, milícias e as demais facções como <strong>organizações narcoterroristas</strong>, combatendo-as com bloqueio de ativos, desmonte da lavagem de dinheiro e consórcios com estados e municípios para inteligência e retomada de territórios?","Plano de Flávio Bolsonaro, “Terrorista vai ser tratado como terrorista”, p. 13."],
+["F","Este candidato promete apoiar e sancionar a <strong>redução da maioridade penal de 18 para 16 anos</strong> e também punir maiores de 14 anos que cometerem crimes graves como estupro, tráfico, tortura e assassinato. Quem é?","Plano de Flávio Bolsonaro, “O crime do menor não é menor”, p. 13."],
+["F","Quem propõe criar um <strong>Sistema Nacional de Fronteira</strong>: uma tropa de elite do Exército, da Marinha e da Aeronáutica, equipada com armas de guerra, inteligência e tecnologia, para interceptar fuzis e drogas por terra, portos e espaço aéreo nos 16 mil km de fronteira?","Plano de Flávio Bolsonaro, “Tropa de elite nas fronteiras”, p. 13-14."],
+["F","Quem quer construir <strong>5 presídios de segurança máxima inspirados no modelo de El Salvador</strong>, que, somados aos 5 federais, formariam um complexo chamado “TREVA”, com presos sem celular, sem visita íntima e com visitas monitoradas?","Plano de Flávio Bolsonaro, “Mais presídios, menos bandidos soltos”, p. 14."],
+["F","Este candidato promete criar, em parceria com os governos estaduais, <strong>meio milhão de novas vagas no sistema prisional em 4 anos</strong> para zerar o déficit carcerário. Quem é?","Plano de Flávio Bolsonaro, “Mais presídios, menos bandidos soltos”, p. 14."],
+["F","Quem propõe usar a força da Presidência para aprovar a <strong>castração química</strong>, aplicada a estupradores e abusadores de crianças condenados pela Justiça?","Plano de Flávio Bolsonaro, “Cortar o mal pela raiz”, p. 14."],
+["F","Quem propõe monitorar com <strong>tornozeleira eletrônica os agressores das mais de meio milhão de mulheres com medida protetiva</strong> e mudar a lei para que assassinos e agressores de mulheres cumpram a pena integralmente, sem sair após 55% dela?","Plano de Flávio Bolsonaro, “Tolerância zero para o feminicídio”, p. 14."],
+["F","Este candidato quer usar <strong>tropas especiais da Marinha e da Aeronáutica para ocupar e monitorar permanentemente portos e aeroportos</strong>, citando o Porto de Santos como rota de exportação de cocaína. Quem é?","Plano de Flávio Bolsonaro, “Acabar com a cocaína made in Brazil”, p. 15."],
+["F","Quem promete <strong>dobrar os investimentos federais em segurança pública</strong> ao longo do mandato, argumentando que hoje o governo federal destina só 0,4% de seus gastos à área?","Plano de Flávio Bolsonaro, “Menos verbo mais verba”, p. 15."],
+["F","Quem propõe o <strong>“Muralha Brasileira”</strong>: um sistema nacional de reconhecimento facial integrado a bancos de dados criminais, inspirado no Smart Sampa, com mais de 1 milhão de novas câmeras em portos, aeroportos e áreas públicas?","Plano de Flávio Bolsonaro, “Luz, câmara, prisão”, p. 15."],
+["F","Este candidato propõe <strong>redirecionar os recursos hoje destinados às famílias de detentos para as famílias das vítimas</strong> de crimes. Quem é?","Plano de Flávio Bolsonaro, “Auxílio das famílias das vítimas, não dos bandidos”, p. 15."],
+["F","Quem quer <strong>acabar com a progressão de regime para crimes hediondos</strong>, fazendo com que quem tirar uma vida cumpra integralmente a condenação em regime fechado?","Plano de Flávio Bolsonaro, “Sem desconto para a barbárie”, p. 15-16."],
+["F","Quem propõe que quem for pego <strong>roubando celular fique preso</strong> e que quem furta ou revende aparelho roubado tenha a <strong>pena inicial quadruplicada</strong>, sem benefícios?","Plano de Flávio Bolsonaro, “Quem não entrar na linha vai ser desligado da sociedade”, p. 16."],
+["F","Quem propõe a <strong>Central da Mulher</strong>, um espaço físico em imóveis da União, com Sistema S e parceiros, que reúne acolhimento, orientação jurídica, apoio psicológico, vagas de emprego, crédito e renegociação de dívidas, além de caminhões e barcos itinerantes?","Plano de Flávio Bolsonaro, “Brasil por Elas – Central da Mulher”, p. 17."],
+["F","Este candidato propõe a <strong>ClarIA</strong>, uma assistente virtual de inteligência artificial disponível 24 horas que orienta a mulher sobre medida protetiva, exames, emprego e crédito, e permite registrar ocorrência pelo chat. Quem é?","Plano de Flávio Bolsonaro, “ClarIA”, p. 18-19."],
+["F","Quem propõe um <strong>“bônus de internet”</strong>: pacotes de conexão garantidos para que nenhuma mulher deixe de estudar, buscar emprego, empreender ou pedir ajuda por falta de internet?","Plano de Flávio Bolsonaro, “Bônus de internet”, p. 18."],
+["F","Quem quer reunir o Ligue 180, as delegacias online, o botão de emergência e as centrais de monitoramento em <strong>uma só plataforma, com um sistema nacional de avaliação de risco</strong> que prioriza as denúncias de violência mais graves?","Plano de Flávio Bolsonaro, “Denúncia facilitada”, p. 18-19."],
+["F","Quem propõe o programa <strong>“Ganha, Ganha”</strong>, no qual atitudes como concluir cursos, poupar e pagar contas em dia geram pontos que viram juros menores, cashback e crédito facilitado na CAIXA, no Banco da Amazônia e no Banco do Nordeste?","Plano de Flávio Bolsonaro, “Ganha, Ganha”, p. 19-20 e 46."],
+["F","Este candidato promete <strong>assessorar a mulher a obter a escritura da casa própria no seu nome</strong>, como forma de autonomia e proteção contra a violência doméstica, e ampliar os espaços de acolhimento. Quem é?","Plano de Flávio Bolsonaro, “Casa Segura”, p. 20."],
+["F","Quem propõe a <strong>“Escola Brasil por Elas”</strong>, apresentada como o maior programa gratuito de capacitação feminina da América Latina, com cursos de inteligência artificial, programação e marketing digital ligados ao Sistema S e a vagas de emprego?","Plano de Flávio Bolsonaro, “Escola Brasil por Elas”, p. 20."],
+["F","Quem propõe um <strong>voucher-creche</strong>: onde não houver vaga na creche pública, a família recebe um vale para matricular a criança na rede privada credenciada até a vaga pública surgir?","Plano de Flávio Bolsonaro, “Creche garantida para toda criança”, p. 21."],
+["F","Quem propõe <strong>Unidades Móveis de Saúde da Mulher</strong> em ônibus, caminhões e barcos adaptados, com exames preventivos e atenção à menopausa, à gestação e à endometriose?","Plano de Flávio Bolsonaro, “Saúde para Elas”, p. 21."],
+["F","Quem quer tratar a <strong>internet como infraestrutura</strong>, como uma estrada, garantindo pacotes de conexão e levando cobertura a escolas, áreas rurais e regiões de fronteira, dando continuidade ao programa Wi-Fi Brasil?","Plano de Flávio Bolsonaro, “Internet como infraestrutura”, p. 24."],
+["F","Este candidato promete <strong>digitalizar 100% dos serviços federais</strong> passíveis de digitalização, sob o princípio “digital by design”, e <strong>proibir que o governo peça de novo documentos que já possui</strong>. Quem é?","Plano de Flávio Bolsonaro, “Estado Digital”, p. 24-25."],
+["F","Quem propõe uma <strong>identidade digital única integrada ao Gov.br</strong>, com assistentes automatizados que montam a trilha de serviços de cada cidadão, inclusive por comando de voz?","Plano de Flávio Bolsonaro, “Estado Digital”, p. 25."],
+["F","Quem propõe um <strong>aplicativo de companhia com alertas de perigo</strong> para idosos que vivem sozinhos, dando tranquilidade ao filho que mora longe?","Plano de Flávio Bolsonaro, p. 25 e 39."],
+["F","Para acabar com a fila do INSS, quem propõe digitalizar os processos e trocar a <strong>“gestão voltada a entidades sindicais” por uma gestão profissional</strong> medida pelo tempo que o aposentado espera para receber?","Plano de Flávio Bolsonaro, “INSS sem fila”, p. 26."],
+["F","Quem quer levar a <strong>Lei de Liberdade Econômica a todos os estados e municípios</strong> e promover um amplo “revogaço” regulatório de normas obsoletas para quem empreende?","Plano de Flávio Bolsonaro, “Desburocratização para quem empreende”, p. 27."],
+["F","Quem propõe <strong>simplificar as outorgas de irrigação</strong>, que hoje levam em média 24 meses, e acelerar a titulação do pequeno proprietário rural?","Plano de Flávio Bolsonaro, “Menos burocracia no campo”, p. 27-28."],
+["F","Quem propõe integrar em <strong>um só sistema</strong> os cadastros fundiários e ambientais, as guias de trânsito animal, as autorizações de supressão vegetal e o monitoramento por satélite, para que o produtor rural <strong>preste a informação uma vez só</strong>?","Plano de Flávio Bolsonaro, “Menos burocracia no campo”, p. 28."],
+["F","Quem propõe <strong>revisar a reforma tributária aprovada</strong> para reduzir o IVA, projetado em cerca de 30% contra média de 19% da OCDE, e rever os aumentos de impostos do atual governo?","Plano de Flávio Bolsonaro, “Menos imposto no que você consome”, p. 30 e 71-72."],
+["F","Para simplificar a conta de luz, quem propõe a <strong>redução gradual da CDE e das fontes incentivadas</strong>, racionalizando encargos e subsídios cruzados, mas mantendo a tarifa social?","Plano de Flávio Bolsonaro, “Conta de luz mais simples e mais barata”, p. 31 e 53."],
+["F","Quem propõe os <strong>Corredores Logísticos Inteligentes</strong> do Centro-Oeste até os portos, para baixar o custo logístico de 15,5% do PIB, quase o dobro dos 8,8% dos Estados Unidos?","Plano de Flávio Bolsonaro, “Comida mais barata na prateleira” e “Logística e transporte”, p. 31 e 51."],
+["F","Quem quer <strong>proibir o uso de dinheiro de programas sociais em apostas online</strong>, junto com campanhas educativas sobre o endividamento com jogos?","Plano de Flávio Bolsonaro, “Crédito que não afunda a família”, p. 33."],
+["F","Na alfabetização, quem propõe <strong>priorizar o método fônico</strong>, ensinando a criança a ligar cada som à sua letra?","Plano de Flávio Bolsonaro, “Ensinar de verdade”, p. 35."],
+["F","Quem propõe o <strong>Programa Acolher</strong>, em que um aluno de bom desempenho é remunerado para dar reforço, remoto ou presencial, a colegas do ensino fundamental com dificuldade?","Plano de Flávio Bolsonaro, “Ensinar de verdade”, p. 35."],
+["F","Quem propõe que o financiamento das escolas siga um <strong>“orçamento por resultados”</strong>, com repasses vinculados a metas de aprendizagem e gestão por indicadores de proficiência?","Plano de Flávio Bolsonaro, “Ensinar de verdade”, p. 35."],
+["F","Este candidato promete <strong>ampliar as Escolas Cívico-Militares</strong> e tirar do papel a política nacional para alunos com altas habilidades. Quem é?","Plano de Flávio Bolsonaro, “Ensinar de verdade”, p. 35."],
+["F","Quem defende uma educação “livre de doutrinação político-partidária”, com professores formados “para ensinar e não para militar em sala de aula” e <strong>os pais decidindo os valores que o filho recebe</strong>?","Plano de Flávio Bolsonaro, “Ensinar de verdade”, p. 35."],
+["F","Quem propõe o <strong>“Escola nas Férias”</strong>, mantendo as escolas abertas no recesso com esporte, arte, música e literatura?","Plano de Flávio Bolsonaro, “Ensinar de verdade”, p. 35-36."],
+["F","Quem propõe um <strong>voucher educacional</strong> para que, onde faltar vaga na rede pública, a família matricule o filho em outra escola?","Plano de Flávio Bolsonaro, “Ensinar de verdade”, p. 36."],
+["F","Quem quer ampliar o ensino técnico no ensino médio em parceria com empresas, permitindo que <strong>o setor produtivo custeie bolsas de formação técnica</strong> dos profissionais de que precisa?","Plano de Flávio Bolsonaro, “Preparar para o trabalho que existe”, p. 36."],
+["F","Quem propõe <strong>transferir a governança do ensino superior para o Ministério da Ciência, Tecnologia e Inovações</strong>, com CAPES e CNPq priorizando impacto produtivo e transferência de tecnologia?","Plano de Flávio Bolsonaro, “Preparar para o trabalho que existe”, p. 36."],
+["F","Quem propõe trocar o modelo de financiamento estudantil pelo <strong>Empréstimo Contingente à Renda</strong>, em que o estudante só começa a pagar quando estiver empregado e a parcela é proporcional ao que ganha?","Plano de Flávio Bolsonaro, “Preparar para o trabalho que existe”, p. 37."],
+["F","Quem promete garantir as condições para a <strong>correção efetiva da tabela SUS</strong>, para que a remuneração cubra o custo real de hospitais, santas casas e clínicas, sobretudo no interior?","Plano de Flávio Bolsonaro, “Saúde que cuida antes de a doença chegar”, p. 37."],
+["F","Quem propõe <strong>contratar exames e serviços da rede privada nos horários ociosos</strong>, aproveitando aparelhos parados enquanto pacientes esperam meses?","Plano de Flávio Bolsonaro, “Saúde que cuida antes de a doença chegar”, p. 37-38."],
+["F","Quem propõe um <strong>sistema de entrega de remédio em domicílio</strong> para idosos, pessoas com deficiência e doentes crônicos?","Plano de Flávio Bolsonaro, “Saúde que cuida antes de a doença chegar”, p. 38."],
+["F","Quem quer usar <strong>inteligência artificial de apoio à prevenção</strong> para identificar quem corre maior risco de adoecer e chamar essa pessoa para se cuidar antes de chegar ao pronto-socorro?","Plano de Flávio Bolsonaro, “Saúde que cuida antes de a doença chegar”, p. 38."],
+["F","Quem propõe o programa <strong>Casa Segura para Envelhecer</strong>, com subsídio para adaptar a casa de idosos de famílias de menor renda e torná-la acessível?","Plano de Flávio Bolsonaro, “Cuidar de quem a gente ama”, p. 39."],
+["F","Quem propõe implantar <strong>Centros de Referência em Transtorno do Espectro Autista</strong> como parte de políticas transversais para pessoas com deficiência e doenças raras?","Plano de Flávio Bolsonaro, “Cuidar de quem a gente ama”, p. 39."],
+["F","Na saúde mental, quem destaca o <strong>diagnóstico precoce e o apoio a crianças com TDAH</strong>, a atenção à depressão e à ansiedade e o cuidado com idosos com Alzheimer e com quem cuida deles?","Plano de Flávio Bolsonaro, “Cuidar de quem a gente ama”, p. 39."],
+["F","Quem propõe o <strong>Programa Escola de Campeões</strong>, com parcerias público-privadas para criar times escolares, treinos no contraturno e competições municipais e estaduais contra a evasão escolar?","Plano de Flávio Bolsonaro, “Esporte que forma”, p. 40."],
+["F","Quem propõe assegurar que a <strong>categoria feminina do esporte, da base ao alto rendimento, seja disputada apenas por atletas do sexo feminino</strong>?","Plano de Flávio Bolsonaro, “Esporte que forma”, p. 40-41."],
+["F","Na cultura, quem propõe corrigir as leis de incentivo para alcançar polos regionais e artistas pouco projetados, <strong>sem subordinar a arte a agendas políticas</strong> e distinguindo cultura de entretenimento comercial?","Plano de Flávio Bolsonaro, “Cultura que valoriza nossas raízes”, p. 41."],
+["F","Quem propõe dar ao beneficiário de programa social <strong>prioridade em todas as ações de primeiro emprego, qualificação e intermediação de mão de obra</strong>, com uma trilha de saída desenhada para ele?","Plano de Flávio Bolsonaro, “Da proteção à autonomia”, p. 43."],
+["F","Quem propõe garantir o <strong>retorno imediato e sem fila ao benefício social após o fim do seguro-desemprego</strong>, para ninguém ter medo de aceitar um emprego?","Plano de Flávio Bolsonaro, “Da proteção à autonomia”, p. 43 e 54."],
+["F","Quem propõe um <strong>contrato de trabalho com menor custo na folha para jovens de 18 a 24 anos</strong> em busca do primeiro emprego?","Plano de Flávio Bolsonaro, “Trabalho que compensa”, p. 43-44."],
+["F","Quem propõe um contrato mais atrativo para contratar <strong>pessoas com 50 anos ou mais desempregadas há pelo menos 12 meses</strong>?","Plano de Flávio Bolsonaro, “Trabalho que compensa”, p. 44."],
+["F","Quem defende o <strong>“negociado sobre o legislado”</strong>, permitindo que trabalhador e empresa combinem diretamente as condições de trabalho, com jornada flexível?","Plano de Flávio Bolsonaro, “Trabalho que compensa”, p. 44."],
+["F","Quem se posiciona contra a <strong>“República Sindical” e a unicidade sindical</strong>, e propõe regular o trabalho por aplicativos sem “dirigentes sindicais à frente do processo”?","Plano de Flávio Bolsonaro, “O trabalhador em primeiro lugar, não o sindicato”, p. 44-45."],
+["F","Quem propõe o <strong>“Minha Primeira Empresa”</strong>: menos burocracia para abrir o negócio, capacitação pelo Sistema S e uma esteira de crédito e serviços da CAIXA do primeiro balcão ao primeiro faturamento?","Plano de Flávio Bolsonaro, “Negócio próprio”, p. 45."],
+["F","Quem quer transformar a CAIXA no <strong>“Banco da Prosperidade”</strong>, com uma plataforma física e digital que reúne crédito, orientação financeira, habitação e uma IA que indica as oportunidades certas para cada cidadão?","Plano de Flávio Bolsonaro, “A CAIXA como Banco da Prosperidade”, p. 46."],
+["F","Quem promete <strong>retomar o programa Casa Verde e Amarela</strong>, com meta de 2,5 milhões de residências e a menor taxa de juros possível?","Plano de Flávio Bolsonaro, “A casa própria”, p. 47."],
+["F","Quem promete garantir a plena aplicação do <strong>Marco Legal do Saneamento</strong>, acelerando concessões e parcerias, e assume a meta de <strong>nenhuma escola sem água até 2030</strong>?","Plano de Flávio Bolsonaro, “A casa própria”, p. 47."],
+["F","Quem retoma a meta do programa <strong>Lixão Zero</strong>, para acabar com os lixões a céu aberto?","Plano de Flávio Bolsonaro, “A casa própria”, p. 47-48."],
+["F","Quem estabelece a meta de <strong>dobrar o crescimento do país para 4% ao ano</strong> de forma sustentada na próxima década, apoiada no investimento privado?","Plano de Flávio Bolsonaro, “Brasil que cresce”, p. 49."],
+["F","Quem propõe que, se o órgão ambiental <strong>não decidir sobre uma licença dentro do prazo definido, a licença seja concedida</strong> ao empreendedor que entregou tudo o que a norma exige?","Plano de Flávio Bolsonaro, “Segurança jurídica”, p. 49-50."],
+["F","Quem propõe <strong>estabilidade de regras por até 20 anos</strong> para grandes projetos e que o Estado <strong>indenize o empreendedor</strong> se voltar atrás numa licença concedida regularmente?","Plano de Flávio Bolsonaro, “Segurança jurídica”, p. 50."],
+["F","Quem propõe dar <strong>autonomia a povos indígenas e quilombolas para decidir sobre atividades produtivas em suas terras</strong>, com indenização por restrições ao usufruto?","Plano de Flávio Bolsonaro, “Segurança jurídica”, p. 50 e 61."],
+["F","Quem promete <strong>investir R$ 900 bilhões em quatro anos</strong> em rodovias, hidrovias, portos, aeroportos e ferrovias, com um fundo lastreado em ativos e imóveis da União e BNDES financiando só obras no Brasil?","Plano de Flávio Bolsonaro, “Logística e transporte”, p. 50-51."],
+["F","Quem promete <strong>destravar a Ferrogrão</strong> e adotar um trem de cargas ligando Mato Grosso, o oeste do Paraná e Santa Catarina?","Plano de Flávio Bolsonaro, “Logística e transporte”, p. 51."],
+["F","Quem propõe o <strong>Trem do Nordeste</strong>, 1.400 km de trilhos de passageiros ligando Salvador, Aracaju, Maceió, Recife, João Pessoa, Natal e Fortaleza?","Plano de Flávio Bolsonaro, p. 51 e 60."],
+["F","Quem promete concluir a <strong>Transnordestina</strong> e ampliar seu traçado para incluir a Paraíba e o Rio Grande do Norte?","Plano de Flávio Bolsonaro, p. 51 e 60."],
+["F","Quem quer destravar a <strong>Hidrovia do Tapajós</strong>, com diálogo prévio com as comunidades locais, para escoar a produção?","Plano de Flávio Bolsonaro, “Logística e transporte”, p. 51."],
+["F","Quem lista obras hídricas como o <strong>Ramal do Apodi, o Ramal do Salgado, a Adutora do Seridó e o Canal do Xingó</strong>, além da duplicação do Eixão das Águas do Ceará?","Plano de Flávio Bolsonaro, “Segurança hídrica”, p. 52."],
+["F","Quem propõe <strong>permitir a exploração de gás não convencional (fracking)</strong> dentro de um Programa Nacional de Segurança Energética focado em refino e escoamento?","Plano de Flávio Bolsonaro, “Energia”, p. 52."],
+["F","Quem quer <strong>reduzir impostos sobre energia</strong> para transformar o país em polo global de data centers sustentáveis, atraídos por energia barata e confiável?","Plano de Flávio Bolsonaro, “Energia”, p. 53."],
+["F","Quem propõe <strong>ampliar o RenovaBio para o exterior</strong>, permitindo que o Brasil venda créditos de carbono ao mundo?","Plano de Flávio Bolsonaro, “Energia”, p. 53."],
+["F","Para o agro, quem propõe ferramentas de <strong>securitização e reorganização das dívidas do setor</strong> e buscar soluções diplomáticas contra sanções dos EUA, da China e da Europa aos produtos nacionais?","Plano de Flávio Bolsonaro, “Agronegócio e Campo”, p. 53-54."],
+["F","Quem promete segurança jurídica <strong>“irreversível e sem margem para relativizações do direito de propriedade”</strong> e retomar o ritmo de titulação de imóveis rurais?","Plano de Flávio Bolsonaro, “Agronegócio e Campo”, p. 54."],
+["F","Quem propõe desenvolver <strong>polos de irrigação no Matopiba e no semiárido nordestino</strong> e expandir a água de reuso nos períodos de estiagem?","Plano de Flávio Bolsonaro, “Agronegócio e Campo”, p. 54-55."],
+["F","Em minerais críticos, quem defende que o <strong>Estado atue como regulador e coordenador, “não como empresário”</strong>, atraindo capital estrangeiro e firmando parcerias “sem ranços ideológicos”?","Plano de Flávio Bolsonaro, “Minerais críticos”, p. 55-56."],
+["F","Quem propõe uma <strong>legislação voltada à “liberdade de criar e inovar”</strong> em tecnologia, para que a IA não seja “sufocada por regras que afugentam o investimento”?","Plano de Flávio Bolsonaro, “Tecnologia e inovação”, p. 56-57."],
+["F","Quem assume a meta de <strong>zerar o desmatamento ilegal até 2029</strong>, usando IA, satélite e bancos de dados em tempo real, sem criar novas obrigações ao produtor que cumpre a lei?","Plano de Flávio Bolsonaro, “Meio ambiente”, p. 58."],
+["F","Quem promete <strong>“acabar com a política que criminaliza o morador da floresta”</strong>, dirigindo o rigor da fiscalização ao crime organizado e não ao ribeirinho e ao pequeno produtor?","Plano de Flávio Bolsonaro, “Amazônia: soberania e oportunidade”, p. 59."],
+["F","Quem propõe <strong>eliminar superposições entre Ibama, Funai e ICMBio</strong> e exigir transparência dos financiadores de ONGs que recebem recursos internacionais e processam a União?","Plano de Flávio Bolsonaro, “Amazônia: soberania e oportunidade”, p. 59."],
+["F","Quem promete <strong>concluir a expansão do Baixio do Irecê</strong>, apresentado como o maior perímetro de irrigação da América Latina?","Plano de Flávio Bolsonaro, “Desenvolvimento regional”, p. 60."],
+["F","Na política externa, quem promete <strong>reverter o desgaste nas relações com Argentina, Estados Unidos e Israel</strong> com uma diplomacia “pragmática, não ideológica”?","Plano de Flávio Bolsonaro, “Soberania com profissionalismo”, p. 61-62."],
+["F","Quem propõe <strong>retomar a adesão à OCDE</strong>, incluindo o fim gradual do IOF sobre câmbio exigido pelo processo?","Plano de Flávio Bolsonaro, “Brasil no mundo”, p. 63."],
+["F","Quem propõe acabar com as <strong>competências criminais originárias do STF</strong>, para que parlamentares sejam julgados por instâncias como o STJ ou os TRFs?","Plano de Flávio Bolsonaro, “Reforma do Judiciário”, p. 65."],
+["F","Quem propõe <strong>limitar as decisões monocráticas do STF</strong>, privilegiando decisões colegiadas, para que “a caneta de um só ministro” não se sobreponha ao Congresso?","Plano de Flávio Bolsonaro, “Reforma do Judiciário”, p. 65."],
+["F","Quem propõe uma <strong>quarentena de 1 ano para que ministros de Estado possam ser indicados ao STF</strong>?","Plano de Flávio Bolsonaro, “Reforma do Judiciário”, p. 65."],
+["F","Quem propõe <strong>impedir que parentes de até terceiro grau de um magistrado</strong>, e seus escritórios, atuem no tribunal desse magistrado?","Plano de Flávio Bolsonaro, “Reforma do Judiciário”, p. 66."],
+["F","Quem propõe o <strong>fim da reeleição para presidente da República</strong>, citando uma PEC já protocolada no Senado?","Plano de Flávio Bolsonaro, “Reforma política”, p. 66."],
+["F","Quem promete um <strong>“Tesouraço da Censura”</strong>, acabando com qualquer estrutura estatal que funcione como “Ministério da Verdade” e revogando atos do atual governo contra críticos?","Plano de Flávio Bolsonaro, “Tesouraço na Censura”, p. 66-67."],
+["F","Quem propõe <strong>cortar no mínimo 10 ministérios</strong>, reduzir cargos comissionados e combater penduricalhos e supersalários?","Plano de Flávio Bolsonaro, “Enxugar a máquina”, p. 69."],
+["F","Quem propõe preencher o comando das estatais por <strong>recrutamento com regras de mercado e busca ativa de executivos</strong>, blindar os fundos de pensão de indicações políticas e retomar o Programa Nacional de Desestatização?","Plano de Flávio Bolsonaro, “Enxugar a máquina”, p. 70."],
+["F","Quem propõe <strong>substituir as atuais regras fiscais</strong> por regras focadas em estabilizar e reduzir a dívida, com superávits primários e um limite para gastos discricionários dos três Poderes?","Plano de Flávio Bolsonaro, “Contas em ordem”, p. 70-71."],
+["F","Quem promete <strong>reeditar um pacote antifraude na Previdência nos moldes da MP 871/2019</strong> e criar dupla checagem nos descontos do consignado do INSS?","Plano de Flávio Bolsonaro, “O lado dos aposentados”, p. 72-73."],
+["F","Sob o lema “Mais Brasil, menos Brasília”, quem propõe <strong>rever o pacto federativo</strong> e a legislação para agilizar a liberação de recursos e a prestação de contas dos municípios?","Plano de Flávio Bolsonaro, “Mais Brasil e menos Brasília”, p. 68-69."],
+
+/* ===================== LULA ===================== */
+["L","Quem propõe aprofundar a participação social com novas <strong>conferências nacionais</strong> e fazer do PPA 2028-2031 um plano ainda mais participativo, abrindo também o <strong>ciclo do orçamento federal</strong> à participação da sociedade?","Programa de Governo de Lula, diretriz 1, p. 15."],
+["L","Quem propõe enfrentar o atual <strong>sistema de emendas parlamentares</strong>, que somou R$ 50 bilhões em 2026 (cerca de um quinto das despesas discricionárias), levando o tema ao debate com a sociedade?","Programa de Governo de Lula, diretriz 1, p. 15-16."],
+["L","Quem defende avançar na <strong>regulação democrática das redes sociais e plataformas digitais</strong> para impedir que difundam desinformação e campanhas de ódio?","Programa de Governo de Lula, diretriz 1, p. 16."],
+["L","Quem propõe uma <strong>Política Nacional de Letramento Digital</strong> para ensinar cidadãos de todas as idades a navegar criticamente e um <strong>Conselho Nacional pela Soberania Digital</strong> com participação da sociedade?","Programa de Governo de Lula, “Gestão e Modernização do Estado”, p. 17."],
+["L","Quem propõe continuar o <strong>“Imóvel da Gente”</strong>, destinando terrenos e imóveis da União para moradia, regularização fundiária ou equipamentos de saúde e educação, com apoio do Fundo Imobiliário da União?","Programa de Governo de Lula, p. 17-18."],
+["L","Quem propõe transformar o <strong>Portal da Transparência numa plataforma inteligente com dados abertos e IA</strong> e aprofundar o Plano de Integridade e Combate à Corrupção 2025-2027?","Programa de Governo de Lula, p. 18."],
+["L","Quem defende a diretriz de <strong>“colocar o pobre no orçamento e o rico no Imposto de Renda”</strong>, com isenção para quem ganha até R$ 5 mil e tributação de offshores e fundos exclusivos?","Programa de Governo de Lula, p. 10-11 e 19."],
+["L","Quem propõe avançar na <strong>regulamentação do Estatuto da Igualdade Racial</strong> e manter a política de cotas no serviço público para ampliar a presença de pessoas negras nos cargos superiores?","Programa de Governo de Lula, diretriz 2, p. 19."],
+["L","Quem promete acelerar a <strong>titulação de territórios quilombolas</strong>, com desapropriações por interesse social, e abrir novos campi quilombo dos Institutos Federais?","Programa de Governo de Lula, diretriz 2, p. 20."],
+["L","Quem promete <strong>implantar plenamente a Universidade Indígena</strong> e seguir com demarcação e desintrusão de terras indígenas, retirando invasores?","Programa de Governo de Lula, diretriz 2, p. 20."],
+["L","Quem propõe concluir <strong>30 Casas da Mulher Brasileira e 15 Centros de Referência da Mulher</strong>, ampliar as Salas Lilás e distribuir aos estados kits de monitoramento de agressores, dentro de um Pacto de Enfrentamento ao Feminicídio?","Programa de Governo de Lula, diretriz 2, p. 21."],
+["L","Quem propõe tornar <strong>obrigatórios os Planos de Ação nas empresas com desigualdade salarial entre homens e mulheres</strong>, com metas progressivas de redução, com base na Lei de Igualdade Salarial?","Programa de Governo de Lula, diretriz 12, p. 75."],
+["L","Para idosos com dificuldade de locomoção, quem propõe um atendimento <strong>“de porta em porta”</strong> e levar a todo o país o <strong>PADI Brasil</strong>, programa do SUS de atenção domiciliar multiprofissional?","Programa de Governo de Lula, diretriz 2, p. 22."],
+["L","Quem propõe ampliar <strong>parcerias com a iniciativa privada para qualificar e contratar pessoas com mais de 60 anos</strong>?","Programa de Governo de Lula, diretriz 2, p. 23."],
+["L","Quem promete manter a <strong>Política Nacional de Educação Bilíngue de Surdos</strong>, com Libras como primeira língua, e fortalecer a fiscalização das cotas de contratação de pessoas com deficiência?","Programa de Governo de Lula, diretriz 2, p. 23."],
+["L","Quem propõe aprimorar o <strong>ECA Digital</strong>, regulamentando o uso de telas por faixa etária e as plataformas de jogos e ambientes digitais frequentados por crianças?","Programa de Governo de Lula, diretriz 2, p. 24."],
+["L","Quem promete manter e fortalecer o <strong>Pé-de-Meia</strong>, incentivo financeiro pago a estudantes do ensino médio para que nenhum jovem pobre deixe a escola por falta de renda?","Programa de Governo de Lula, p. 24 e 32."],
+["L","Quem propõe manter investimentos na <strong>rede nacional de cursinhos populares (CPop)</strong> e ampliar alimentação e moradia estudantil no ensino superior?","Programa de Governo de Lula, diretriz 2, p. 24."],
+["L","Dentro de uma Política Nacional de Cuidados, quem propõe as <strong>Cuidotecas</strong>, espaços que acolhem crianças de 3 a 12 anos para liberar o tempo das mulheres, além de <strong>lavanderias públicas e cozinhas solidárias</strong>?","Programa de Governo de Lula, diretriz 2, p. 25-26."],
+["L","Quem propõe, uma vez aprovada a <strong>PEC da Segurança Pública</strong>, criar o <strong>Ministério da Segurança Pública</strong> para coordenar o SUSP em articulação com estados e municípios?","Programa de Governo de Lula, diretriz 3, p. 27 e 30."],
+["L","Quem cita a <strong>Lei Antifacção</strong> e propõe manter a asfixia financeira do crime organizado, além de medidas rígidas para <strong>barrar candidaturas de pessoas ligadas ao crime</strong>?","Programa de Governo de Lula, diretriz 3, p. 27."],
+["L","Quem propõe fortalecer o <strong>Programa Brasil Contra o Crime Organizado</strong>, com R$ 10 bilhões do Fundo Nacional de Investimento em Infraestrutura Social (FIIS) para estados e municípios?","Programa de Governo de Lula, diretriz 3, p. 27-28."],
+["L","Quem defende manter a <strong>política de controle de armas e munições</strong>, com rastreabilidade e mais fiscalização da PF e do Exército sobre os registros de caçadores, atiradores e colecionadores?","Programa de Governo de Lula, diretriz 3, p. 28."],
+["L","Quem propõe cumprir o <strong>Plano Pena Justa</strong>, criar um <strong>Pacto Nacional de Execução Penal</strong> e um protocolo nacional de classificação e transferência de presos de alta periculosidade?","Programa de Governo de Lula, diretriz 3, p. 28."],
+["L","Quem propõe consolidar as <strong>FICCOs</strong> (Forças Integradas de Combate ao Crime Organizado) como política de Estado na Amazônia e tornar <strong>obrigatória a investigação financeira</strong> nas ações contra a mineração ilegal?","Programa de Governo de Lula, diretriz 3, p. 29."],
+["L","Contra o roubo de celulares, quem propõe expandir o <strong>Celular Seguro</strong> e a <strong>Base Nacional de Celulares com Restrição</strong>, que permite consultar se um aparelho tem restrição antes de comprá-lo?","Programa de Governo de Lula, diretriz 3, p. 29."],
+["L","Quem propõe ampliar o estímulo ao <strong>uso de câmeras corporais por policiais</strong>, com padrões nacionais de gravação e guarda das imagens, e o policiamento de proximidade?","Programa de Governo de Lula, diretriz 3, p. 30."],
+["L","Quem propõe políticas de prevenção da violência com foco na <strong>proteção da juventude negra</strong>, mediação comunitária e justiça restaurativa?","Programa de Governo de Lula, diretriz 3, p. 29."],
+["L","Na alfabetização, quem propõe chegar a <strong>80% das crianças alfabetizadas na idade certa</strong>, via o Compromisso Nacional Criança Alfabetizada pactuado com estados e municípios?","Programa de Governo de Lula, diretriz 4, p. 31."],
+["L","Quem dá “absoluta prioridade” à <strong>educação em tempo integral</strong>, apoiada na inclusão desse financiamento no <strong>Fundeb</strong> a partir de 2026?","Programa de Governo de Lula, diretriz 4, p. 31."],
+["L","Quem promete <strong>universalizar a internet de qualidade nas escolas</strong>, hoje em 75% delas, com recursos do Novo PAC?","Programa de Governo de Lula, diretriz 4, p. 32."],
+["L","Quem propõe ampliar o <strong>MEC Livros e o MEC Idiomas</strong>, que dão acesso pelo celular a leitura e cursos de línguas, incluindo novos idiomas?","Programa de Governo de Lula, diretriz 4, p. 32."],
+["L","Para valorizar professores, quem propõe manter o piso do magistério e programas como o <strong>Pé-de-Meia Licenciatura</strong> e o <strong>Bolsa Mais Professores</strong>?","Programa de Governo de Lula, diretriz 4, p. 32-33."],
+["L","Quem propõe abrir <strong>mais 111 Institutos Federais em 106 municípios</strong> e manter o Partiu IF, cursinho gratuito para alunos do 9º ano entrarem nos IFs?","Programa de Governo de Lula, diretriz 4, p. 33."],
+["L","Quem propõe que a <strong>Farmácia Popular continue 100% gratuita</strong> e passe a incluir <strong>exames laboratoriais</strong> para monitorar hipertensão e diabetes?","Programa de Governo de Lula, diretriz 5, p. 36."],
+["L","Quem propõe que o <strong>Mais Médicos</strong> forme especialistas em medicina de família e comunidade dentro do programa, para fixar profissionais em áreas vulneráveis?","Programa de Governo de Lula, diretriz 5, p. 35."],
+["L","Quem promete apoiar os municípios a <strong>universalizar a saúde bucal</strong> pelo Brasil Sorridente, com Unidades Odontológicas Móveis?","Programa de Governo de Lula, diretriz 5, p. 36."],
+["L","Quem propõe manter a <strong>vacinação nas escolas</strong> como eixo prioritário (com destaque para o HPV) e vacinar contra a dengue toda a população elegível?","Programa de Governo de Lula, diretriz 5, p. 36-37."],
+["L","Para reduzir filas de especialistas, quem propõe expandir o <strong>terceiro turno nos serviços de saúde</strong>, as Carretas da Saúde e os mutirões, dentro do Agora Tem Especialistas?","Programa de Governo de Lula, diretriz 5, p. 37."],
+["L","Quem propõe parcerias para que <strong>hospitais privados ofereçam exames e cirurgias ao SUS em troca de créditos financeiros ou abatimento de dívidas</strong>?","Programa de Governo de Lula, diretriz 5, p. 37."],
+["L","Quem propõe uma <strong>fila única digital para atendimento especializado</strong>, ordenada pelo risco clínico com apoio de IA e com transparência para o paciente?","Programa de Governo de Lula, diretriz 5, p. 38."],
+["L","Quem propõe consolidar a <strong>maior rede pública de cuidado ao câncer do mundo</strong> e o Supercentro Brasil de telediagnóstico, que agiliza a análise de biópsias de regiões remotas?","Programa de Governo de Lula, diretriz 5, p. 38."],
+["L","Quem promete fortalecer o <strong>Programa Dignidade Menstrual</strong> e distribuir gratuitamente no SUS métodos contraceptivos de longa duração, como o implante subdérmico?","Programa de Governo de Lula, diretriz 5, p. 38."],
+["L","Quem propõe fortalecer a <strong>Rede Alyne</strong>, ambulâncias perinatais e enfermeiras obstétricas na Amazônia Legal, com atenção específica à mortalidade materna de mulheres negras?","Programa de Governo de Lula, diretriz 5, p. 38-39."],
+["L","Quem propõe ampliar os <strong>CAPS</strong> e os profissionais voltados a <strong>pessoas com problemas relacionados a jogos de apostas</strong>?","Programa de Governo de Lula, diretriz 5, p. 39."],
+["L","Quem propõe fortalecer o <strong>Complexo Econômico-Industrial da Saúde</strong>, com produção nacional de insulina, a fábrica da Hemobrás e insumos farmacêuticos a partir da biodiversidade amazônica?","Programa de Governo de Lula, diretriz 5, p. 39."],
+["L","Quem quer aprovar uma lei de <strong>direito autoral no ambiente digital e regular a IA para que músicos, autores e artistas sejam pagos</strong> quando plataformas usarem conteúdo brasileiro?","Programa de Governo de Lula, diretriz 6, p. 42."],
+["L","Quem promete trabalhar pela <strong>regulamentação do streaming (VOD)</strong> no Congresso e manter a Cota de Tela para o cinema nacional?","Programa de Governo de Lula, diretriz 6, p. 42."],
+["L","Quem cita o <strong>Marco Legal dos Games</strong>, que permite à indústria de jogos acessar a Lei Rouanet, e promete seguir apoiando o setor?","Programa de Governo de Lula, diretriz 6, p. 42."],
+["L","Quem propõe fortalecer os <strong>Pontos de Cultura</strong> do programa Cultura Viva, com planos de ação continuados e gestão compartilhada com a sociedade civil?","Programa de Governo de Lula, diretriz 6, p. 41."],
+["L","Quem cita como tarefa do próximo mandato realizar a <strong>Copa do Mundo de Futebol Feminino</strong> em 8 capitais brasileiras?","Programa de Governo de Lula, diretriz 6, p. 43."],
+["L","Quem propõe ampliar o <strong>Bolsa Atleta</strong> e manter o patrocínio das empresas estatais ao esporte para o próximo ciclo olímpico e paralímpico?","Programa de Governo de Lula, diretriz 6, p. 43."],
+["L","Quem promete ampliar o <strong>Minha Casa Minha Vida para todas as faixas de renda</strong> e criar o <strong>Compra Assistida</strong>, que permite adquirir imóveis já prontos em situações excepcionais?","Programa de Governo de Lula, diretriz 7, p. 45."],
+["L","Quem propõe construir moradias populares em <strong>áreas da União em regiões centrais e valorizadas</strong> das cidades e ampliar o Reforma Casa Brasil?","Programa de Governo de Lula, diretriz 7, p. 45."],
+["L","Quem propõe garantir recursos para concluir as obras do <strong>Periferia Viva</strong>, com urbanização de favelas e regularização fundiária, e abrir novas rodadas de seleção?","Programa de Governo de Lula, diretriz 7, p. 45-46."],
+["L","Quem propõe estimular <strong>planos estaduais e municipais de enfrentamento ao calor extremo</strong> e seguir com obras de contenção de encostas e drenagem em áreas de risco?","Programa de Governo de Lula, p. 47 e 72-73."],
+["L","Quem promete <strong>manter o novo arcabouço fiscal</strong> como base para uma redução sustentada dos juros, afirmando que “a taxa de juros é hoje o que a inflação foi no passado”?","Programa de Governo de Lula, diretriz 8, p. 49."],
+["L","Quem propõe fortalecer a <strong>Nova Indústria Brasil</strong> com benefícios condicionados a conteúdo local e <strong>margens de preferência para empresas brasileiras</strong> nas compras públicas?","Programa de Governo de Lula, diretriz 8, p. 50-51."],
+["L","Quem propõe seguir com o <strong>Programa Conhecimento Brasil</strong> para repatriar e fixar cientistas brasileiros no país?","Programa de Governo de Lula, diretriz 8, p. 50-51."],
+["L","Quem propõe usar a <strong>Taxonomia Sustentável Brasileira</strong> para criar incentivos que direcionem capital a práticas sustentáveis, ao lado de instrumentos como o Eco Invest?","Programa de Governo de Lula, diretriz 8, p. 51."],
+["L","Quem propõe uma <strong>infraestrutura computacional soberana, com supercomputadores nacionais</strong>, e o desenvolvimento de <strong>modelos de linguagem em português</strong>?","Programa de Governo de Lula, “Economia digital”, p. 54-55."],
+["L","Quem quer exigir que os <strong>data centers instalados no Brasil</strong> tenham salvaguardas socioambientais, uso progressivo de energia 100% renovável e contrapartidas de conteúdo local?","Programa de Governo de Lula, “Economia digital”, p. 54-55."],
+["L","Quem propõe um <strong>Centro Nacional de Transparência Algorítmica</strong> e regras de rastreabilidade de conteúdo sintético gerado por IA?","Programa de Governo de Lula, “Economia digital”, p. 55."],
+["L","Quem propõe reduzir o déficit de <strong>fibra óptica, que ainda atinge 11% dos municípios</strong>, e ampliar o 5G no campo com uso do FUST?","Programa de Governo de Lula, “Economia digital”, p. 55."],
+["L","Quem propõe regulamentar o <strong>Fundo Nacional de Desenvolvimento Regional</strong>, criado na reforma tributária para substituir a guerra fiscal do ICMS?","Programa de Governo de Lula, “Desenvolvimento Regional”, p. 56."],
+["L","Quem quer transformar o Nordeste em polo de <strong>indústrias eletrointensivas</strong>, como siderurgia verde, fertilizantes e hidrogênio de baixo carbono, aproveitando 70% da geração eólica e solar do país?","Programa de Governo de Lula, “Desenvolvimento Regional”, p. 56."],
+["L","Para pequenos negócios, quem propõe ampliar o <strong>Brasil Mais Produtivo</strong> e os fundos garantidores de crédito, além de mais acesso das pequenas empresas às compras do governo?","Programa de Governo de Lula, “Micro, pequenas e médias empresas”, p. 57-58."],
+["L","Nas ferrovias, quem propõe intensificar as concessões em duas frentes: <strong>leilão de novos projetos e repactuação dos contratos existentes</strong>, além de incentivar aeroportos regionais?","Programa de Governo de Lula, “Investimentos em logística”, p. 53."],
+["L","Quem propõe manter <strong>mecanismos de controle de gastos excessivos em apostas on-line</strong> e regras mais rígidas de responsabilidade na concessão de crédito?","Programa de Governo de Lula, diretriz 8, p. 49."],
+["L","Quem propõe que <strong>45% da alimentação escolar venha da agricultura familiar</strong>, 80% seja de alimentos in natura, e usar o Imposto Seletivo para desestimular produtos nocivos à saúde?","Programa de Governo de Lula, diretriz 9, p. 59."],
+["L","Quem propõe expandir o <strong>Plano Safra da Agricultura Familiar</strong>, com juros por perfil de produtor, crédito para agroecologia e acesso simplificado pelo app Meu Imóvel Rural?","Programa de Governo de Lula, diretriz 9, p. 59."],
+["L","Quem promete avançar na <strong>reforma agrária, assentando as famílias acampadas</strong> e ampliando o crédito fundiário?","Programa de Governo de Lula, diretriz 9, p. 60."],
+["L","Quem propõe ampliar o <strong>Programa Cisternas</strong> em regiões com estresse hídrico e fortalecer o Garantia-Safra diante de eventos climáticos extremos?","Programa de Governo de Lula, diretriz 9, p. 60."],
+["L","Quem propõe ampliar a produção nacional de <strong>bioinsumos para reduzir a dependência de fertilizantes químicos importados</strong>?","Programa de Governo de Lula, diretriz 9, p. 60."],
+["L","Quem propõe seguir com a <strong>recuperação de pastagens degradadas</strong> e apoiar a <strong>rastreabilidade individual do rebanho</strong>, do nascimento ao abate?","Programa de Governo de Lula, diretriz 9, p. 62."],
+["L","Quem promete fortalecer a <strong>Embrapa</strong>, com investimentos em biotecnologia, edição genômica e cultivares resistentes a pragas e secas?","Programa de Governo de Lula, diretriz 9, p. 62."],
+["L","Quem propõe acelerar a produção nacional de fertilizantes pela <strong>Petrobras</strong>, com fábricas retomadas em Sergipe, Bahia, Paraná e Mato Grosso do Sul?","Programa de Governo de Lula, diretriz 9, p. 63."],
+["L","Quem cita o <strong>Luz do Povo</strong>, que dá gratuidade na conta de luz a famílias do CadÚnico com consumo de até 80 kWh/mês, como política de combate à pobreza energética?","Programa de Governo de Lula, diretriz 10, p. 65."],
+["L","Quem cita o <strong>Gás do Povo</strong>, com recarga gratuita do botijão de 13 kg para famílias de baixa renda?","Programa de Governo de Lula, diretriz 10, p. 66."],
+["L","Quem defende que a <strong>Petrobras volte ao segmento de distribuição de combustíveis</strong>, amplie o refino e use a Transpetro na logística de GNL?","Programa de Governo de Lula, diretriz 10, p. 67."],
+["L","Quem propõe <strong>acelerar a redução da produção de carvão</strong> e repotenciar as hidrelétricas existentes?","Programa de Governo de Lula, diretriz 10, p. 65."],
+["L","Quem propõe avançar na <strong>autonomia do ciclo do combustível nuclear</strong>, preservando a competência nuclear para uso exclusivamente pacífico?","Programa de Governo de Lula, diretriz 10, p. 68."],
+["L","Quem defende combinar a política de preços da Petrobras com subvenções para <strong>não repassar ao consumidor a volatilidade dos preços internacionais</strong> de diesel, gasolina e gás?","Programa de Governo de Lula, diretriz 10, p. 66."],
+["L","Quem reafirma a meta de <strong>desmatamento líquido zero até 2030</strong>, com implementação plena do Plano Nacional de Manejo Integrado do Fogo?","Programa de Governo de Lula, diretriz 11, p. 70."],
+["L","Quem propõe ampliar o <strong>ProPatinhas</strong>, com caravanas de castração, e manter o <strong>SinPatinhas</strong>, cadastro nacional de cães e gatos?","Programa de Governo de Lula, diretriz 11, p. 69 e 71."],
+["L","Quem propõe colocar em funcionamento o <strong>Fundo Florestas Tropicais para Sempre (TFFF)</strong>, lançado na COP30, para financiar a conservação?","Programa de Governo de Lula, diretriz 11, p. 70-71."],
+["L","Quem propõe tratar a <strong>Caatinga como ativo estratégico</strong> para o clima e criar financiamento climático permanente para o Semiárido?","Programa de Governo de Lula, diretriz 11, p. 72."],
+["L","Quem promete atuar junto ao Senado pelo <strong>fim da escala 6x1</strong> e pela redução da jornada para <strong>40 horas semanais sem redução de salário</strong>?","Programa de Governo de Lula, diretriz 12, p. 75."],
+["L","Quem propõe combater a <strong>“pejotização espúria”</strong> e fraudes em terceirizações, e retomar a assistência sindical nas homologações de rescisão?","Programa de Governo de Lula, diretriz 12, p. 74-75."],
+["L","Quem propõe regular o trabalho por plataformas definindo remuneração, direitos, <strong>transparência algorítmica e contribuição para a Previdência</strong> dos trabalhadores?","Programa de Governo de Lula, diretriz 12, p. 75 e 77."],
+["L","Quem propõe expandir, na rede SINE, uma <strong>Plataforma Pública Nacional de Empregabilidade com IA</strong>, integrando vagas, cursos e certificações?","Programa de Governo de Lula, diretriz 12, p. 74."],
+["L","Quem propõe fortalecer a <strong>Economia Popular e Solidária</strong>, com cooperativas populares, incubação de empreendimentos e acesso a compras públicas, com base na Lei Paul Singer?","Programa de Governo de Lula, diretriz 12, p. 75-76."],
+["L","Quem propõe <strong>regulamentar a negociação coletiva no setor público</strong> e atualizar o sistema sindical?","Programa de Governo de Lula, diretriz 12, p. 76."],
+["L","Na Previdência, quem quer voltar à época em que o trabalhador <strong>recebia uma carta em casa avisando que tinha direito ao benefício</strong>, e criar contribuições flexíveis para quem tem trabalho intermitente?","Programa de Governo de Lula, diretriz 12, p. 77."],
+["L","Quem promete continuar a <strong>política de valorização do salário mínimo com ganho real</strong> todos os anos como estratégia de distribuição de renda?","Programa de Governo de Lula, diretriz 12, p. 74."],
+["L","Quem defende a <strong>reforma do Conselho de Segurança da ONU</strong>, com mais países em desenvolvimento entre os membros permanentes?","Programa de Governo de Lula, diretriz 13, p. 81."],
+["L","Quem propõe <strong>aprofundar a aproximação com os BRICS</strong> e o Sul Global e fortalecer o Novo Banco de Desenvolvimento (NDB), além de democratizar o FMI?","Programa de Governo de Lula, diretriz 13, p. 81."],
+["L","Quem propõe um <strong>mercado comum sul-americano de energia</strong>, com interconexões, e consolidar o Mercosul como principal plataforma de integração da região?","Programa de Governo de Lula, diretriz 13, p. 80."],
+["L","Quem propõe fortalecer a <strong>Inteligência de Estado em caráter civil</strong>, subordinada ao controle democrático e rejeitando seu uso para perseguição política?","Programa de Governo de Lula, diretriz 13, p. 79."],
+["L","Quem coloca como prioridade externa a <strong>Aliança Global contra a Fome e a Pobreza</strong> e a Cooperação Sul-Sul?","Programa de Governo de Lula, diretriz 13, p. 81."],
+
+/* ========== TEMAS PRESENTES NOS DOIS PLANOS (a pista está na forma de execução) ========== */
+["F","Quem propõe um prontuário eletrônico único <strong>vinculado ao CPF e integrado ao Gov.br</strong>, compartilhado entre as redes <strong>pública e privada</strong>, para que o médico do pronto-socorro saiba na hora seus remédios e alergias?","Plano de Flávio Bolsonaro, “Saúde digital e prontuário eletrônico único”, p. 25-26. No plano de Lula, o prontuário único avança pela Rede Nacional de Dados em Saúde (RNDS), integrando os serviços do SUS.",1],
+["F","Quem quer usar inteligência artificial para <strong>agilizar o agendamento de consultas e exames, encaixando o paciente na primeira vaga disponível</strong>, junto com a digitalização completa do SUS?","Plano de Flávio Bolsonaro, p. 26. No plano de Lula, a IA é usada na triagem, na regulação por risco clínico e no diagnóstico onde faltam especialistas.",1],
+["F","Quem propõe uma telessaúde em que <strong>médicos de regiões com baixa demanda atendem, por aplicativo, pacientes de lugares onde as filas são longas</strong>?","Plano de Flávio Bolsonaro, p. 38. No plano de Lula, a telessaúde vem por kits de teleconsulta na rede básica, telecirurgia e cirurgia robótica.",1],
+["F","Na mobilidade urbana, quem propõe que os <strong>bancos públicos priorizem o financiamento</strong> de metrô, trilhos e ônibus movidos a eletricidade e <strong>biocombustíveis</strong>, valorizando contratos que juntam moradia e infraestrutura no mesmo projeto?","Plano de Flávio Bolsonaro, “Mobilidade urbana”, p. 51. No plano de Lula, a mobilidade vem por obras do Novo PAC (metrôs, VLTs, BRTs) e frotas elétricas que gerem demanda à indústria nacional.",1],
+["F","Para baratear a comida, quem propõe apoiar a produção nacional de fertilizantes <strong>a partir das reservas de potássio e fosfato</strong> e do gás do pré-sal?","Plano de Flávio Bolsonaro, p. 32 e 53-54. No plano de Lula, os fertilizantes vêm das fábricas retomadas pela Petrobras e do fomento a bioinsumos.",1],
+["F","Quem propõe implementar as metas de combustível sustentável de aviação (SAF) a partir de 2027 com <strong>coordenação permanente entre os ministérios da Agricultura e de Minas e Energia</strong>, e articular o Plano Safra com incentivos à biomassa?","Plano de Flávio Bolsonaro, “Agronegócio e Campo”, p. 55. No plano de Lula, o SAF avança com plantas de etanol de 2ª geração e as primeiras biorrefinarias de SAF no Novo PAC.",1],
+["F","Quem propõe <strong>linhas especiais de financiamento para empresas de biogás</strong>, como parte de um plano de tornar o Brasil potência em etanol, biodiesel, HVO e SAF?","Plano de Flávio Bolsonaro, “Energia”, p. 53. No plano de Lula, o biogás e o biometano aparecem ligados à gestão de resíduos e esgoto com apoio da União.",1],
+["F","Quem propõe <strong>ampliar o Seguro Rural junto com a capacidade de armazenagem das safras</strong>, argumentando que safra protegida e estocada evita que o preço dispare na entressafra?","Plano de Flávio Bolsonaro, p. 31 e 54. No plano de Lula, a proposta é um instrumento contra catástrofes para perdas sistêmicas, além do seguro rural da agricultura familiar.",1],
+["F","Sobre emendas parlamentares, quem propõe <strong>mais transparência, controle e rastreabilidade</strong>, priorizando sua alocação nas políticas do Plano Plurianual aprovado pelo Congresso?","Plano de Flávio Bolsonaro, “Mais Brasil e menos Brasília”, p. 69. No plano de Lula, o sistema de emendas é criticado como distorção do orçamento e o tema deve ser levado ao debate com a sociedade.",1],
+["F","Quem propõe consolidar o mercado regulado de carbono para <strong>posicionar o Brasil como fornecedor global de ativos ambientais</strong>, ao lado de uma bioeconomia de fármacos e cosméticos da biodiversidade?","Plano de Flávio Bolsonaro, “Meio ambiente”, p. 57. No plano de Lula, o mercado de carbono (SBCE) é regulamentado em articulação com a Nova Indústria Brasil.",1],
+["F","Quem propõe pagamento por serviços ambientais para que o produtor que preserva vegetação nativa seja tratado <strong>“como parceiro da conservação, e não como suspeito”</strong>, consolidando o Cadastro Ambiental Rural?","Plano de Flávio Bolsonaro, p. 55 e 57-58. No plano de Lula, o PSA é voltado à biodiversidade e vem com o reconhecimento legal da restauração biocultural.",1],
+["F","Quem propõe modernizar a busca de emprego com um <strong>banco nacional de vagas conectado ao RH das empresas</strong>, no lugar do “sistema lento e desconectado de hoje”?","Plano de Flávio Bolsonaro, “Trabalho que compensa”, p. 44. No plano de Lula, a proposta é uma plataforma pública com IA na rede SINE.",1],
+["F","Quem propõe ampliar as instituições de longa permanência para idosos <strong>para os casos em que o cuidado familiar não for viável ou suficiente</strong>, ao lado de subsídio para adaptar a casa do idoso?","Plano de Flávio Bolsonaro, “Cuidar de quem a gente ama”, p. 39. No plano de Lula, as vagas públicas em ILPIs vêm acompanhadas de mais fiscalização contra maus-tratos.",1],
+["F","Quem propõe uma Rede Nacional de Cuidado para idosos e pessoas com deficiência, com centros-dia e atendimento domiciliar feitos em <strong>parcerias público-privadas com estados, municípios e organizações sociais</strong>?","Plano de Flávio Bolsonaro, “Creche garantida para toda criança”, p. 21. No plano de Lula, há a Política Nacional de Cuidados, que trata o cuidado como direito universal, com Cuidotecas e cozinhas solidárias.",1],
+["F","Quem propõe fortalecer a <strong>Rede Nacional de Hospitais Inteligentes (EBSERH)</strong>, modernizando os hospitais universitários federais existentes?","Plano de Flávio Bolsonaro, p. 38. No plano de Lula, a proposta é implantar novos hospitais universitários articulados ao Agora Tem Especialistas.",1],
+["F","Quem propõe <strong>detectar talentos paralímpicos desde a base</strong> e dar mais autonomia às entidades paralímpicas, tratando o paradesporto como via de reabilitação e inserção profissional?","Plano de Flávio Bolsonaro, “Esporte que forma”, p. 40. No plano de Lula, o apoio ao esporte paralímpico vem pelo Bolsa Atleta e pelo patrocínio das estatais.",1],
+["F","No esporte de alto rendimento, quem propõe <strong>trazer a iniciativa privada para o patrocínio</strong>, com clubes e universidades, e lançar <strong>editais de ciência de dados</strong> para confederações e clubes?","Plano de Flávio Bolsonaro, “Esporte que forma”, p. 40. No plano de Lula, o alto rendimento é apoiado pelo Bolsa Atleta ampliado e pelo patrocínio das estatais.",1],
+["F","Quem propõe preservar o patrimônio histórico <strong>celebrando a miscigenação e o Brasil como país de imigrantes</strong>, recuperando centros históricos e acervos “hoje deteriorados”?","Plano de Flávio Bolsonaro, “Cultura que valoriza nossas raízes”, p. 41. No plano de Lula, o patrimônio é tratado com obras de restauro pelo Novo PAC e salvaguarda dos mestres das culturas populares.",1],
+["F","No turismo, quem defende que <strong>a segurança pública é a base para o setor florescer</strong> e que ferrovias como o Trem do Nordeste levem o visitante mais longe?","Plano de Flávio Bolsonaro, “Turismo”, p. 59-60. No plano de Lula, o turismo cresce com roteiros temáticos de gastronomia, arte e ecoturismo e promoção internacional.",1],
+["F","Quem propõe ampliar a Estratégia Saúde da Família e criar um <strong>Programa de Atendimento aos Idosos</strong>, para que o idoso não enfrente “o mesmo percurso cansativo de sempre” para se cuidar?","Plano de Flávio Bolsonaro, p. 37. No plano de Lula, a saúde da família avança com equipes multiprofissionais e financiamento atrelado a parâmetros de qualidade.",1],
+["F","Quem propõe regularização fundiária urbana <strong>priorizando áreas já consolidadas e reduzindo vazios urbanos</strong>, com PPPs que juntam moradia e infraestrutura, e escritura de preferência no nome da mulher?","Plano de Flávio Bolsonaro, “A casa própria”, p. 47. No plano de Lula, a regularização vem pelo Periferia Viva e pelo uso de imóveis da União (Imóvel da Gente).",1],
+["F","Contra a corrupção, quem propõe <strong>fortalecer a Lei das Estatais de 2016</strong>, com exigência de qualificação técnica e quarentena para quem vem de campanha eleitoral?","Plano de Flávio Bolsonaro, p. 70. No plano de Lula, o combate à corrupção vem pelo Plano de Integridade 2025-2027 e por um Portal da Transparência com IA.",1],
+["F","Quem propõe que o Estado induza a inteligência artificial <strong>pelas compras públicas e pelo GovTech</strong>, com a meta de elevar a participação brasileira nas <strong>patentes de IA</strong>?","Plano de Flávio Bolsonaro, “Tecnologia e inovação”, p. 56. No plano de Lula, a aposta é em supercomputadores públicos e modelos de linguagem em português.",1],
+["F","Quem propõe fortalecer a defesa cibernética afirmando que <strong>“os dados do cidadão são dele, não do governo”</strong>, protegendo pessoas e serviços contra ataques e fraudes?","Plano de Flávio Bolsonaro, p. 57. No plano de Lula, a defesa cibernética busca tecnologias próprias para reduzir a dependência externa.",1],
+["F","Quem propõe que os investimentos nas Forças Armadas tenham <strong>foco em drones e inteligência artificial para combater o crime organizado</strong>?","Plano de Flávio Bolsonaro, “Brasil no mundo”, p. 63. No plano de Lula, a defesa se apoia na Base Industrial de Defesa, com caças Gripen, KC-390 e fragatas.",1],
+["F","No comércio exterior, quem propõe uma <strong>abertura comercial que dê às empresas acesso a bens de capital, tecnologia e insumos importados</strong>, reduzindo preços pela concorrência?","Plano de Flávio Bolsonaro, “Brasil no mundo”, p. 63. No plano de Lula, o foco é estimular exportações industriais e aprimorar a defesa comercial.",1],
+["F","Quem propõe expandir o escoamento do gás do pré-sal <strong>com investimento privado atraído por regras estáveis</strong>, dando continuidade à Nova Lei do Gás que quebrou o monopólio?","Plano de Flávio Bolsonaro, “Energia”, p. 52-53. No plano de Lula, a malha de gás é expandida com integração sul-americana e papel da Petrobras e da Transpetro.",1],
+["F","Quem propõe levar <strong>robótica, computadores e tablets às escolas</strong> e incluir no currículo competências da economia digital, como lidar com o próprio dinheiro e empreender?","Plano de Flávio Bolsonaro, “Ensinar de verdade”, p. 35. No plano de Lula, a prioridade é universalizar a internet de qualidade nas escolas pelo Novo PAC.",1],
+["F","Quem propõe expandir a rede de transmissão de energia <strong>dentro de um Programa Nacional de Segurança Energética</strong> que também foca em refino e escoamento de combustíveis e gás?","Plano de Flávio Bolsonaro, “Energia”, p. 52. No plano de Lula, a transmissão avança por leilões e obras como a linha Graça Aranha–Silvânia.",1],
+["F","Na Amazônia, quem propõe reforçar a fiscalização <strong>“com soberania e presença do Estado”</strong> e cooperar com vizinhos contra garimpo e madeira ilegais, mas sem tratar o ribeirinho e o extrativista como criminosos?","Plano de Flávio Bolsonaro, p. 58-59. No plano de Lula, a segurança na Amazônia vem pelas FICCOs, pelas Forças Armadas e pela cooperação na OTCA.",1],
+
+["L","Quem propõe acelerar o prontuário único pela <strong>Rede Nacional de Dados em Saúde (RNDS)</strong>, integrando atenção primária, vigilância, farmácia e especialistas, e permitindo <strong>marcar consulta na UBS e ver exames pelo celular</strong>?","Programa de Governo de Lula, diretriz 5, p. 35. No plano de Flávio Bolsonaro, o prontuário é vinculado ao CPF no Gov.br e compartilhado entre redes pública e privada.",1],
+["L","Quem propõe usar IA na saúde para <strong>triagem, priorização de casos graves e diagnóstico em áreas com escassez de especialistas</strong>?","Programa de Governo de Lula, diretriz 5, p. 35. No plano de Flávio Bolsonaro, a IA serve ao agendamento e à identificação de quem corre risco de adoecer.",1],
+["L","Quem propõe mais salas de telessaúde, <strong>telecirurgia e cirurgia robótica</strong>, e o uso de teleconsulta, teleorientação e teleacolhimento na rede básica?","Programa de Governo de Lula, diretriz 5, p. 35 e 38. No plano de Flávio Bolsonaro, a telessaúde é feita por aplicativo, com médicos de regiões de baixa demanda.",1],
+["L","Quem propõe seguir financiando metrôs, VLTs, BRTs e ônibus elétricos <strong>com obras do Novo PAC que gerem demanda para a indústria nacional de equipamentos de transporte</strong>?","Programa de Governo de Lula, diretriz 7, p. 46. No plano de Flávio Bolsonaro, os bancos públicos priorizam metrô, trilhos e ônibus a eletricidade e biocombustíveis.",1],
+["L","Quem propõe ampliar o apoio à <strong>construção de creches pelo Novo PAC</strong>, em parceria com estados e municípios, para cumprir as metas do Plano Nacional de Educação?","Programa de Governo de Lula, diretriz 4, p. 31. No plano de Flávio Bolsonaro, quando falta vaga, a família recebe um voucher para creche privada credenciada.",1],
+["L","Quem propõe incluir no Novo PAC <strong>plantas de etanol de segunda geração e as primeiras biorrefinarias de SAF</strong> do país, fortalecendo a Petrobras Biocombustíveis?","Programa de Governo de Lula, diretriz 10, p. 68. No plano de Flávio Bolsonaro, o SAF avança com coordenação entre ministérios e incentivos à biomassa no Plano Safra.",1],
+["L","No saneamento, quem propõe apoiar estados e municípios a universalizar água e esgoto <strong>priorizando periferias historicamente negligenciadas</strong>, com resíduos virando biogás e biometano?","Programa de Governo de Lula, diretriz 7, p. 46-47. No plano de Flávio Bolsonaro, a universalização vem pela plena aplicação do Marco Legal do Saneamento, com concessões e PPPs.",1],
+["L","Quem propõe dialogar com o setor produtivo para criar um <strong>instrumento contra catástrofes que cubra perdas sistêmicas de quebras severas de safra</strong>, além de ampliar o seguro da agricultura familiar?","Programa de Governo de Lula, diretriz 9, p. 60 e 62. No plano de Flávio Bolsonaro, o Seguro Rural é ampliado junto com a armazenagem das safras.",1],
+["L","Quem propõe regulamentar o <strong>Sistema Brasileiro de Comércio de Emissões (SBCE)</strong> de forma articulada com os objetivos da Nova Indústria Brasil?","Programa de Governo de Lula, diretriz 8, p. 51. No plano de Flávio Bolsonaro, o mercado de carbono serve para o Brasil fornecer ativos ambientais ao mundo.",1],
+["L","Quem propõe programas de pagamento por serviços ambientais voltados à biodiversidade e <strong>reconhecer em lei a “restauração biocultural”</strong> como estratégia de Estado?","Programa de Governo de Lula, diretriz 11, p. 72. No plano de Flávio Bolsonaro, o PSA remunera o produtor que preserva, tratado como “parceiro, não suspeito”.",1],
+["L","Quem propõe tratar as regiões de fronteira como <strong>espaços de integração e desenvolvimento</strong>, com mais serviços públicos, infraestrutura e cooperação com os países vizinhos?","Programa de Governo de Lula, diretriz 13, p. 79. No plano de Flávio Bolsonaro, a fronteira recebe uma tropa de elite das Forças Armadas para criar um “paredão”.",1],
+["L","Quem propõe ampliar vagas públicas em instituições de longa permanência para idosos <strong>e aperfeiçoar a fiscalização para identificar maus-tratos</strong>?","Programa de Governo de Lula, diretriz 2, p. 22. No plano de Flávio Bolsonaro, as ILPIs crescem para quando o cuidado familiar não for suficiente.",1],
+["L","Quem propõe apoiar os municípios a expandir os <strong>Centros-Dia</strong> e espaços de envelhecimento ativo como <strong>academias públicas, praças e espaços de leitura</strong>?","Programa de Governo de Lula, diretriz 2, p. 22. No plano de Flávio Bolsonaro, os centros-dia fazem parte de uma Rede Nacional de Cuidado em parcerias público-privadas.",1],
+["L","Quem propõe implantar <strong>novos hospitais universitários</strong>, inclusive em estados que não tinham essa estrutura, integrando-os ao programa de redução de filas de especialistas?","Programa de Governo de Lula, diretriz 4, p. 34. No plano de Flávio Bolsonaro, a proposta é modernizar a EBSERH (Hospitais Inteligentes).",1],
+["L","Quem propõe aperfeiçoar a <strong>Lei Aldir Blanc e a Lei Rouanet</strong> com desconcentração regional e mais participação social, via Conselho Nacional de Política Cultural e comitês estaduais?","Programa de Governo de Lula, diretriz 6, p. 40-41. No plano de Flávio Bolsonaro, as leis de incentivo são corrigidas “sem subordinar a arte a agendas políticas”.",1],
+["L","Quem propõe políticas de salvaguarda para os <strong>mestres e mestras das culturas populares</strong>, com regras de direito autoral sobre os saberes que eles mantêm vivos?","Programa de Governo de Lula, diretriz 6, p. 41. No plano de Flávio Bolsonaro, a cultura valoriza o patrimônio histórico e a miscigenação.",1],
+["L","No turismo, quem propõe <strong>roteiros temáticos de gastronomia, arte, cultura e ecoturismo</strong>, unindo os setores criativos ao turismo?","Programa de Governo de Lula, “Desenvolvimento Regional”, p. 57. No plano de Flávio Bolsonaro, o turismo se apoia na segurança pública e no Trem do Nordeste.",1],
+["L","Para a saúde mental dos jovens, quem propõe foco na Política Nacional de Atenção Psicossocial, na <strong>redução de danos</strong> e no combate ao preconceito em escolas e universidades?","Programa de Governo de Lula, diretriz 2, p. 25. No plano de Flávio Bolsonaro, a saúde mental destaca o diagnóstico precoce de TDAH, depressão e ansiedade.",1],
+["L","Quem propõe fortalecer o diagnóstico e o acompanhamento de pessoas com <strong>TEA e outras neurodivergências</strong> dentro da Rede de Atenção Psicossocial e dos CAPS?","Programa de Governo de Lula, diretriz 5, p. 39. No plano de Flávio Bolsonaro, a proposta são Centros de Referência em TEA.",1],
+["L","Quem propõe expandir as equipes de saúde da família <strong>multiprofissionais</strong> e usar o financiamento para induzir parâmetros de qualidade no atendimento em territórios vulneráveis?","Programa de Governo de Lula, diretriz 5, p. 34-35. No plano de Flávio Bolsonaro, a Saúde da Família vem com um Programa de Atendimento aos Idosos.",1],
+["L","Quem propõe acelerar a IA no setor produtivo investindo em <strong>instituições públicas de pesquisa que já desenvolvem IA</strong> e levando a transformação digital à <strong>economia popular</strong>?","Programa de Governo de Lula, “Economia digital”, p. 55. No plano de Flávio Bolsonaro, o Estado induz a IA por compras públicas, GovTech e patentes.",1],
+["L","Quem propõe reforçar a defesa cibernética <strong>desenvolvendo tecnologias próprias e reduzindo a dependência externa</strong> em áreas estratégicas?","Programa de Governo de Lula, diretriz 13, p. 79. No plano de Flávio Bolsonaro, a defesa cibernética parte do princípio de que “os dados do cidadão são dele”.",1],
+["L","Na defesa, quem cita caças Gripen, cargueiros KC-390 e fragatas e propõe fortalecer a <strong>Base Industrial e Tecnológica de Defesa</strong> com orçamento previsível?","Programa de Governo de Lula, diretriz 13, p. 78. No plano de Flávio Bolsonaro, o foco é em drones e IA contra o crime organizado.",1],
+["L","No comércio exterior, quem propõe <strong>estimular exportações industriais e aprimorar os instrumentos de defesa comercial</strong> para enfrentar “agressões comerciais”?","Programa de Governo de Lula, p. 52 e 80. No plano de Flávio Bolsonaro, a proposta é uma abertura comercial com acesso a importados.",1],
+["L","Quem propõe expandir a malha de gás natural rumo ao interior e fortalecer a <strong>integração gasífera sul-americana</strong>?","Programa de Governo de Lula, diretriz 10, p. 66-67. No plano de Flávio Bolsonaro, o gás do pré-sal é escoado com investimento privado e a Nova Lei do Gás.",1],
+["L","Quem propõe um <strong>programa nacional de resiliência climática no campo</strong>, com mais irrigação, plantio direto, agricultura de precisão e alertas meteorológicos precoces?","Programa de Governo de Lula, diretriz 9, p. 61. No plano de Flávio Bolsonaro, a irrigação cresce com polos no Matopiba e no semiárido.",1],
+["L","Na segurança hídrica, quem propõe seguir com <strong>obras complementares da transposição do São Francisco</strong>, revitalização de bacias e recuperação de barragens pelo Novo PAC?","Programa de Governo de Lula, diretriz 11, p. 72. No plano de Flávio Bolsonaro, as obras são listadas uma a uma, como o Ramal do Apodi e a Adutora do Seridó.",1],
+["L","Contra o desmatamento, quem propõe o <strong>programa União com Municípios</strong>, apoiando prefeituras com as maiores taxas, e diálogo com o setor produtivo para rastreabilidade e devida diligência nas cadeias?","Programa de Governo de Lula, diretriz 11, p. 69 e 72. No plano de Flávio Bolsonaro, a meta é zerar o desmatamento ilegal até 2029 sem novas obrigações ao produtor que cumpre a lei.",1],
+["L","Quem propõe continuar os <strong>leilões de transmissão</strong> e abrir uma nova fronteira de <strong>investimentos em baterias</strong>, incorporando riscos climáticos ao planejamento elétrico?","Programa de Governo de Lula, diretriz 10, p. 65. No plano de Flávio Bolsonaro, a transmissão faz parte de um Programa Nacional de Segurança Energética.",1],
+["L","Quem propõe a regularização fundiária <strong>especialmente na região Norte</strong>, junto com a destinação de terras públicas a unidades de conservação, territórios indígenas e assentamentos?","Programa de Governo de Lula, p. 60 e 70. No plano de Flávio Bolsonaro, a titulação mira o pequeno proprietário rural, com segurança “irreversível” ao direito de propriedade.",1]
+];
+
+const NOME = {L:"Lula", F:"Flávio Bolsonaro"};
+const POR_RODADA = 10, TOTAL = 20;
+const app = document.getElementById("app");
+let rodada = [], idx = 0, respostas = [], escolha = null, filtro = "todas", nome = "";
+const esc = t => t.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function embaralhar(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+const topo = () => window.scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+
+function abertura(){
+  const nL = PERGUNTAS.filter(p=>p[0]==="L").length, nF = PERGUNTAS.filter(p=>p[0]==="F").length;
+  app.innerHTML = `
+  <section class="abertura entra">
+    <h1>Você sabe quem propõe o quê?</h1>
+    <p>São ${nL+nF} propostas tiradas dos planos de governo de Lula e de Flávio Bolsonaro. Cada pergunta explica a proposta e como ela seria executada. Você aponta o autor.</p>
+    <div class="regras">
+      <div><b>20 perguntas</b><span>10 de cada plano, sorteadas e embaralhadas a cada rodada.</span></div>
+      <div><b>Sem spoiler</b><span>Você só descobre se acertou no final, com a explicação de cada resposta.</span></div>
+      <div><b>Temas comuns</b><span>Quando os dois planos falam do mesmo tema, a pista está na forma de execução.</span></div>
+    </div>
+    <div class="nome">
+      <label for="campo-nome">Qual é o seu nome?</label>
+      <input id="campo-nome" type="text" maxlength="40" autocomplete="given-name" placeholder="Digite seu nome" value="${esc(nome)}">
+      <p class="aviso" id="aviso" role="alert"></p>
+      <button class="botao" id="comecar">Começar o jogo</button>
+    </div>
+    <p style="margin-top:16px;font-size:.9rem">No teclado: L ou A para Lula, F ou B para Flávio Bolsonaro, Enter para confirmar.</p>
+  </section>`;
+  const campo = document.getElementById("campo-nome");
+  const iniciar = () => {
+    const v = campo.value.trim();
+    if(!v){ document.getElementById("aviso").textContent = "Digite seu nome para começar."; campo.focus(); return; }
+    nome = v; novaRodada();
+  };
+  document.getElementById("comecar").onclick = iniciar;
+  campo.addEventListener("keydown", e => { if(e.key === "Enter"){ e.preventDefault(); iniciar(); } });
+  campo.addEventListener("input", () => { document.getElementById("aviso").textContent = ""; });
+}
+
+function novaRodada(){
+  const L = embaralhar(PERGUNTAS.filter(p=>p[0]==="L")).slice(0,POR_RODADA);
+  const F = embaralhar(PERGUNTAS.filter(p=>p[0]==="F")).slice(0,POR_RODADA);
+  rodada = embaralhar(L.concat(F)); idx=0; respostas=[]; filtro="todas";
+  pergunta(); topo();
+}
+
+function escada(){
+  let h = "";
+  for(let i=0;i<TOTAL;i++){
+    const cls = i<idx ? "feita" : i===idx ? "atual" : "";
+    h += `<li class="${cls} ${(i+1)%5===0?"marco":""}"><span class="n">${i+1}</span></li>`;
+  }
+  return `<ol class="escada" aria-label="Progresso">${h}</ol>`;
+}
+
+function pergunta(){
+  escolha = null;
+  const p = rodada[idx];
+  app.innerHTML = `
+  <div class="palco">
+    <div class="centro entra">
+      <div class="moldura"><div class="placa">
+        <div class="placa-topo"><span>Pergunta <b>${idx+1}</b> de ${TOTAL}</span><span>Quem propõe?</span></div>
+        ${p[3]?'<span class="tag">Tema presente nos dois planos: repare na forma de execução</span>':''}
+        <p class="pergunta">${p[1]}</p>
+      </div></div>
+      <div class="opcoes" role="group" aria-label="Alternativas">
+        <button class="opcao" data-c="L" aria-pressed="false"><span class="miolo"><span class="letra">A</span>Lula</span></button>
+        <button class="opcao" data-c="F" aria-pressed="false"><span class="miolo"><span class="letra">B</span>Flávio Bolsonaro</span></button>
+      </div>
+      <div class="confirma">
+        <p id="host">Escolha uma alternativa.</p>
+        <button class="botao" id="confirmar" disabled>${idx===TOTAL-1?"Confirmar e ver resultado":"Confirmar resposta"}</button>
+      </div>
+    </div>
+    ${escada()}
+  </div>`;
+  app.querySelectorAll(".opcao").forEach(b=>b.onclick=()=>marcar(b.dataset.c));
+  document.getElementById("confirmar").onclick = confirmar;
+  const at=app.querySelector(".escada li.atual"); const esc=app.querySelector(".escada"); if(at&&esc&&esc.scrollWidth>esc.clientWidth) esc.scrollLeft = at.offsetLeft - esc.clientWidth/2;
+}
+
+function marcar(c){
+  if(!rodada.length || idx>=TOTAL) return;
+  escolha = c;
+  app.querySelectorAll(".opcao").forEach(b=>{const on=b.dataset.c===c; b.classList.toggle("sel",on); b.setAttribute("aria-pressed",on);});
+  const host = document.getElementById("host");
+  host.textContent = `${NOME[c]}. Está certo disso?`; host.className = "pergunta-host";
+  const bt = document.getElementById("confirmar"); bt.disabled = false; bt.focus({preventScroll:true});
+}
+
+function confirmar(){
+  if(!escolha) return;
+  const p = rodada[idx];
+  respostas.push({p, escolha, ok: escolha===p[0]});
+  idx++;
+  if(idx<TOTAL){ pergunta(); } else { resultado(); topo(); }
+}
+
+function porque(p){
+  const fonte = p[2].charAt(0).toLowerCase()+p[2].slice(1);
+  return `<b>Por quê:</b> a proposta está no ${fonte}`;
+}
+
+function resultado(){
+  const ac = respostas.filter(r=>r.ok).length;
+  const aL = respostas.filter(r=>r.ok&&r.p[0]==="L").length, aF = respostas.filter(r=>r.ok&&r.p[0]==="F").length;
+  const frase = ac===20 ? "Gabaritou! Você conhece os dois planos de ponta a ponta." :
+                ac>=16 ? "Excelente: você domina os dois planos." :
+                ac>=12 ? "Bom resultado, com algumas confusões entre os planos." :
+                ac>=8  ? "Metade do caminho: confira abaixo onde os planos se diferenciam." :
+                         "Os planos ainda guardam surpresas para você. Veja as explicações abaixo.";
+  app.innerHTML = `
+  <section class="resultado entra">
+    <div class="placar">
+      <p class="quem">${esc(nome)},</p>
+      <p class="rot">você acertou</p>
+      <p class="num">${ac}<span style="font-size:.45em;color:var(--muted);text-shadow:none"> de ${TOTAL}</span></p>
+      <p class="frase">${frase}</p>
+      <div class="parciais">
+        <span>Propostas de Lula: <b>${aL} de 10</b></span>
+        <span>Propostas de Flávio Bolsonaro: <b>${aF} de 10</b></span>
+      </div>
+    </div>
+    <div class="filtro" role="group" aria-label="Filtrar respostas">
+      <button data-f="todas">Todas (${TOTAL})</button>
+      <button data-f="certas">Acertos (${ac})</button>
+      <button data-f="erradas">Erros (${TOTAL-ac})</button>
+    </div>
+    <div class="lista" id="lista"></div>
+    <div class="acoes"><button class="botao" id="denovo">Jogar nova rodada</button><button class="botao sec" id="inicio">Voltar ao início</button></div>
+  </section>`;
+  app.querySelectorAll(".filtro button").forEach(b=>b.onclick=()=>{filtro=b.dataset.f; lista();});
+  document.getElementById("denovo").onclick = novaRodada;
+  document.getElementById("inicio").onclick = ()=>{rodada=[];abertura();topo();};
+  lista();
+}
+
+function lista(){
+  app.querySelectorAll(".filtro button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.f===filtro));
+  const el = document.getElementById("lista");
+  const itens = respostas.map((r,i)=>({r,i})).filter(({r})=> filtro==="todas" || (filtro==="certas"?r.ok:!r.ok));
+  el.innerHTML = itens.length ? itens.map(({r,i})=>`
+    <article class="card ${r.ok?"":"erro"}">
+      <div class="cab"><span class="n">Pergunta ${i+1}</span><span class="st ${r.ok?"ok":"bad"}">${r.ok?"✓ Acertou":"✗ Errou"}</span></div>
+      <p class="q">${r.p[1]}</p>
+      <p class="resp"><span>Sua resposta: <b>${NOME[r.escolha]}</b></span><span>Resposta correta: <b>${NOME[r.p[0]]}</b></span></p>
+      <p class="porque">${porque(r.p)}</p>
+    </article>`).join("") : `<p style="text-align:center;color:var(--muted)">Nenhuma pergunta nesta categoria.</p>`;
+}
+
+document.addEventListener("keydown",e=>{
+  if(!rodada.length || idx>=TOTAL) return;
+  const k = e.key.toLowerCase();
+  if(k==="l"||k==="a") marcar("L");
+  else if(k==="f"||k==="b") marcar("F");
+  else if(k==="enter" && escolha && !(document.activeElement && document.activeElement.tagName==="BUTTON")){ e.preventDefault(); confirmar(); }
+});
+
+abertura();
+</script>
+</body>
+</html>
